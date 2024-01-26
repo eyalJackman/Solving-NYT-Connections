@@ -40,13 +40,12 @@ for page in product(months, days, years):
     else:
         soup = BeautifulSoup(page.content, "html.parser")
         entries = soup.find("div", class_="entry-content")
-        # print(soup.prettify())
-        groups = entries.find_all(
-            "p", class_="has-background"
-        )  # Tag format, i.e. <p>...</p>
-        groups = [
-            group.text.strip().split(" – ")[0] for group in groups
-        ]  # List format, i.e. ["{GROUP} - Level 1, {GROUP} - Level 2, ..."]
+
+        # Tag format, i.e. <p>...</p>
+        groups = entries.find_all("p", class_="has-background")
+
+        # List format, i.e. ["{GROUP} - Level 1, {GROUP} - Level 2, ..."]
+        groups = [group.text.strip().split(" – ")[0] for group in groups]
 
         group_words = []
         word_lists = entries.find_all("ul")
@@ -59,5 +58,5 @@ for page in product(months, days, years):
         json_data.append(connection)
 
 json_str = json.dumps(json_data)
-with open("data.json", "w") as f:
+with open("connections_data.json", "w") as f:
     f.write(json_str)
